@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:replace="fragment/common :: meta" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.5/css/froala_editor.pkgd.min.css" />
+    <th:block th:replace="fragment/common :: head"/>
+    <title>모두가 웃는 소리 :: 꺄르륵</title>
+</head>
+<body>
+<main class="write-page">
+    <form th:action="@{/create}" th:object="${post}" method="post">
+        <div class="container write">
+            <div class="action">
+                <a class="back-btn action-btn" href="/">
+                    <i class="remixicon-arrow-left-line"></i>
+                </a>
+                <button class="save-btn action-btn" onclick="save()">
+                    <i class="remixicon-check-line"></i>
+                </button>
+            </div>
+            <input type="text" class="create-title" placeholder="어떤 제목으로 글을 쓸까?" th:field="*{title}"/>
+            <textarea name="content" id="editor" th:field="*{content}"></textarea>
+        </div>
+    </form>
+</main>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.5/js/froala_editor.pkgd.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.3/js/languages/ko.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.3/js/plugins/file.min.js"></script>
+<th:block th:replace="fragment/common :: script"/>
+<script>
+    var option = {
+        heightMin: 200,
+        placeholderText: '꺄르륵 꺄르륵',
+        fontSize: ['8', '10', '12', '14', '18', '30', '60', '96'],
+        language: 'ko'
+    };
+
+    var editor = new FroalaEditor('#editor', option);
+
+    function save() {
+        console.log(editor.save.save());
+    }
+</script>
+</body>
+</html>

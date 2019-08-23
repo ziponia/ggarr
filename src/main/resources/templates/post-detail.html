@@ -1,0 +1,27 @@
+<html th:lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<th:block th:replace="toolbar">
+    <a href="/create" class="write"><i class="remixicon-user-line"></i></a>
+</th:block>
+<th:block layout:fragment="content">
+    <header>
+        <h1 class="logo" th:text="${post.title}">꺄르륵 꺄르륵</h1>
+    </header>
+<main class="detail-page main-page">
+        <div class="action">
+            <a href="/" class="back-btn"><i class="remixicon-arrow-left-line"></i></a>
+            <span class="space"></span>
+            <a href="/create" class="write"><i class="remixicon-pencil-line"></i></a>
+        </div>
+
+        <div class="content" th:utext="${post.content}">
+            하하하
+        </div>
+</main>
+</th:block>
+
+</html>

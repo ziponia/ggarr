@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html th:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/auth}">
+
+<th:block layout:fragment="content">
+    <main class="auth-page">
+        <form th:action="@{/auth/login}" class="in-form" th:object="${user}" method="post">
+            <h4>@_@ 입장하기.</h4>
+            <input type="text" class="email" th:field="*{email}" placeholder="@" />
+            <input type="password" class="email" name="password" th:field="*{password}" placeholder="****" />
+            <button class="submit-btn"><i class="remixicon-arrow-left-up-line"></i> 입장</button>
+
+            <div class="other-block">
+                <a href="/auth/register" class="go-ragist">처음 오셧나요?</a>
+            </div>
+        </form>
+    </main>
+</th:block>
+</html>

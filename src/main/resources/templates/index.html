@@ -1,0 +1,50 @@
+<html th:lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sd="http://www.thymeleaf.org/spring-data"
+      layout:decorate="~{layout/main}">
+
+<th:block th:replace="toolbar">
+    <a href="/create" class="write"><i class="remixicon-user-line"></i></a>
+</th:block>
+<th:block layout:fragment="content">
+    <header>
+        <h1 class="logo">꺄르륵 꺄르륵</h1>
+        <form action="#">
+            <input type="text" placeholder="??!" class="search-field" name="query" th:value="${query}"/>
+        </form>
+    </header>
+<main class="main-page">
+        <div class="action">
+            <a href="/create" class="write"><i class="remixicon-pencil-line"></i></a>
+        </div>
+        <ul class="table main-table">
+            <li class="table-row header">
+                <span class="cell">번호</span>
+                <span class="cell">내용</span>
+                <span class="cell">꺄르륵</span>
+                <span class="cell">@_@</span>
+                <span class="cell">네임</span>
+            </li>
+            <li class="table-row" th:each="post,index : ${postList}">
+                <span class="cell" th:text="${postList.totalElements - (postList.getNumber() * 10) - index.index}">1</span>
+                <span class="cell">
+                    <a th:href="@{/posts/__${post.idx}__}" th:text="${post.title}">ㅗㅜㅑ... 제대루..</a>
+                </span>
+                <span class="cell">35</span>
+                <span class="cell">150</span>
+                <span class="cell" th:text="${post.createUser.name}">화염의지배자불닭보끔</span>
+            </li>
+        </ul>
+        <div class="pagination_wrap">
+            <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
+                <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                <li class="disabled aa"><a href="#" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div>
+</main>
+</th:block>
+
+</html>

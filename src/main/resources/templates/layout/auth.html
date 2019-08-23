@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html th:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <th:block th:replace="fragment/common :: meta"/>
+        <th:block th:replace="fragment/common :: head"/>
+        <link rel="stylesheet" href="/static/css/auth.css" />
+        <title>모두가 웃는 소리 :: 꺄르륵</title>
+    </head>
+    <body>
+        <th:block layout:fragment="content"/>
+        <th:block th:replace="fragment/common :: scripts"/>
+        <th:block layout:fragment="script"/>
+    </body>
+</html>

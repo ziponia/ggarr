@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.space {
+    flex: 1;
+}
+
+input:focus, button:focus {
+    outline: none;
+}
+
+h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 1em;
+}
+
+.clearfix:before, .clearfix:after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.toolbar {
+    width: 1200px;
+    margin: 50px auto auto auto;
+}
+
+.toolbar .user-btn {
+    font-size: 44px;
+    color: #cccccc;
+    border-radius: 44px;
+}
+
+.toolbar .user-btn:hover {
+    color: #6060e0;
+}
+
+header {
+    width: 1200px;
+    font-size: 2em;
+    text-align: center;
+    margin: auto auto 100px;
+}
+
+header .logo {
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+    margin-top: 100px;
+}
+
+header form {
+    display: block;
+}
+
+header form .search-field {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-bottom: 1px solid #eee;
+    padding: 10px 20px;
+    transition: all 300ms;
+}
+
+header form .search-field:focus {
+    border-bottom: 2px solid #6060e0;
+}
+
+main {
+    width: 1200px;
+    margin: auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination * {
+
+}
+
+.pagination li {
+    display: flex;
+    height: 30px;
+    min-width: 30px;
+    margin: 0 5px;
+}
+
+.pagination li .page-link, .pagination li span.page-link > span {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 30px;
+    line-height: 0;
+}
+
+.pagination li.disabled .page-link {
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+    border-radius: 30px;
+    cursor: not-allowed;
+}
+
+.pagination li.active .page-link {
+    background-color: #6060e0;
+    color: #ffffff;
+    border: 1px solid #6060e0;
+    border-radius: 30px;
+}
+
+.pagination li .page-link > span {
+
+}
+
+.pagination li .page-link span:not(.sr-only) {
+    line-height: 0;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.pagination .sr-only {
+    display: none !important;
+}
+
+ul.table {
+    display: table;
+    width: 100%;
+}
+
+ul.table li.table-row {
+    display: table-row;
+}
+
+ul.table li.table-row.header {
+    display: table-header-group;
+}
+
+ul.table li.table-row .cell {
+    padding: 20px;
+    display: table-cell;
+    border-bottom: 1px solid #dddddd;;
+}
+
+.main-table {
+    font-size: 1em;
+    font-weight: 100;
+    margin-bottom: 40px;
+}
+
+.main-table li .cell:first-child {
+    width: 10%;
+}
+
+.main-table li .cell:nth-child(2) {
+    width: 40%;
+}
+
+.main-page {
+    padding-bottom: 100px;
+}
+
+.main-page .action {
+    display: block;
+    text-align: right;
+}
+
+.action .write {
+    font-size: 2em;
+    color: #6060e0;
+}
+
+.action .write i {
+    border: 3px solid #6060e0;
+    border-radius: 2em;
+    padding: 10px;
+}
+
+.write-page .container.write {
+    padding-top: 150px;
+    font-size: 2em;
+}
+
+.write-page .container.write p {
+    font-size: 1.4em;
+}
+
+.write-page .container.write .create-title {
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px 10px 0 0;
+}
+
+.write-page .container.write .action {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.write-page .container.write .save-btn {
+    background-color: #ffffff;
+    border: 0;
+}
+
+.write-page .container.write .action-btn i {
+    border-radius: 10px;
+    border: 3px solid #cccccc;
+    font-size: 46px;
+    color: #cccccc;
+    cursor: pointer;
+}
+
+.write-page .container.write .action-btn:hover i {
+    border: 3px solid #6060e0;
+    color: #6060e0;
+}
+
+.write-page .fr-toolbar.fr-top {
+    border-radius: 0;
+}
+
+.detail-page .content {
+    font-size: 1.4em;
+}
+
+.detail-page .action {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.detail-page .action .back-btn i {
+    border: 3px solid #6060e0;
+    border-radius: 2em;
+    padding: 10px;
+    font-size: 2em;
+    color: #6060e0;
+}
