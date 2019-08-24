@@ -8,19 +8,25 @@
     <a href="/create" class="write"><i class="remixicon-user-line"></i></a>
 </th:block>
 <th:block layout:fragment="content">
-    <header>
-        <h1 class="logo" th:text="${post.title}">꺄르륵 꺄르륵</h1>
-    </header>
+<header>
+    <h1 class="logo" th:text="${post.title}">꺄르륵 꺄르륵</h1>
+</header>
 <main class="detail-page main-page">
-        <div class="action">
-            <a href="/" class="back-btn"><i class="remixicon-arrow-left-line"></i></a>
-            <span class="space"></span>
-            <a href="/create" class="write"><i class="remixicon-pencil-line"></i></a>
-        </div>
+    <div class="action">
+        <a href="/" class="link-btn-icon"><i class="remixicon-arrow-left-line"></i></a>
+        <span class="space"></span>
+        <a th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10"><i class="remixicon-edit-line"></i></a>
+        <a href="/create" class="link-btn-icon"><i class="remixicon-pencil-line"></i></a>
+    </div>
 
-        <div class="content" th:utext="${post.content}">
-            하하하
-        </div>
+    <div class="content" th:utext="${post.content}">
+        하하하
+    </div>
+
+    <!--  comment  -->
+    <div class="comments">
+        <h4>댓글</h4>
+    </div>
 </main>
 </th:block>
 

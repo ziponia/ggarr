@@ -36,6 +36,21 @@ public class PostController {
         response.sendRedirect("/posts/" + entity.getIdx());
     }
 
+    @PreAuthorize("hasAnyAuthority('BASIC')")
+    @GetMapping(value = "/posts/{idx}/update")
+    public String updatePage(
+            @PathVariable Integer idx,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
+        PostEntity postEntity = postService.findPost(idx);
+        if (!userPrincipal.getIdx().equals(postEntity.getCreateUser().getIdx())) {
+            return "redirect:/posts/" + idx;
+        }
+        model.addAttribute("post", postEntity);
+        return "post-create";
+    }
+
     @GetMapping(value = "/posts/{idx}")
     public String postDetail(
             @PathVariable Integer idx,

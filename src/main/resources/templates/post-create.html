@@ -33,7 +33,72 @@
         heightMin: 200,
         placeholderText: '꺄르륵 꺄르륵',
         fontSize: ['8', '10', '12', '14', '18', '30', '60', '96'],
-        language: 'ko'
+        language: 'ko',
+        imageUploadURL: '/ddd',
+        fileUpload: true,
+        fileUploadParam: 'file_param',
+
+        // Set the file upload URL.
+        fileUploadURL: '/upload_file',
+
+        // Additional upload params.
+        fileUploadParams: {id: 'my_editor'},
+
+        // Set request type.
+        fileUploadMethod: 'POST',
+
+        // Set max file size to 20MB.
+        fileMaxSize: 20 * 1024 * 1024,
+
+        // Allow to upload any file.
+        fileAllowedTypes: ['*'],
+
+        events: {
+            'file.beforeUpload': function (files) {
+                // Return false if you want to stop the file upload.
+                console.log('before upload');
+            },
+            'file.uploaded': function (response) {
+                // File was uploaded to the server.
+                console.log('uploaded')
+            },
+            'file.inserted': function ($file, response) {
+                // File was inserted in the editor.
+                console.log('insert')
+            },
+            'file.error': function (error, response) {
+                // Bad link.
+                console.log(error, 'error!')
+                if (error.code == 1) {
+                }
+
+                // No link in upload response.
+                else if (error.code == 2) {
+                }
+
+                // Error during file upload.
+                else if (error.code == 3) {
+                }
+
+                // Parsing response failed.
+                else if (error.code == 4) {
+                }
+
+                // File too text-large.
+                else if (error.code == 5) {
+                }
+
+                // Invalid file type.
+                else if (error.code == 6) {
+                }
+
+                // File can be uploaded only to same domain in IE 8 and IE 9.
+                else if (error.code == 7) {
+                }
+
+                // Response contains the original server response to the request if available.
+            }
+        }
     };
 
     var editor = new FroalaEditor('#editor', option);

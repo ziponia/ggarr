@@ -85,6 +85,10 @@ main {
     margin: auto;
 }
 
+.mr-10 {
+    margin-right: 10px;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -183,17 +187,6 @@ ul.table li.table-row .cell {
     text-align: right;
 }
 
-.action .write {
-    font-size: 2em;
-    color: #6060e0;
-}
-
-.action .write i {
-    border: 3px solid #6060e0;
-    border-radius: 2em;
-    padding: 10px;
-}
-
 .write-page .container.write {
     padding-top: 150px;
     font-size: 2em;
@@ -255,4 +248,28 @@ ul.table li.table-row .cell {
     padding: 10px;
     font-size: 2em;
     color: #6060e0;
+}
+
+.detail-page .action .update-link i {
+
+}
+
+.link-btn-icon i {
+    border: 3px solid #cccccc;
+    border-radius: 2em;
+    padding: 10px;
+    font-size: 2em;
+    color: #cccccc;
+    transition: all 300ms;
+}
+
+.link-btn-icon:hover i {
+    border: 3px solid #6060e0;
+    color: #6060e0;
+}
+
+.detail-page .content {
+    margin-bottom: 100px;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 100px;
 }
