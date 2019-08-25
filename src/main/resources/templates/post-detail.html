@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/main}">
 
 <th:block th:replace="toolbar">
@@ -24,12 +25,35 @@
         하하하
     </div>
 
+    <!-- reaction -->
+    <div class="reaction-block">
+        <button class="link-btn-icon" data-type="LIKE" onclick="updateReaction('LIKE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'LIKE' ? 'active': ''}">
+            <span th:text="${like}">50</span>
+            좋아욧
+        </button>
+        <button class="link-btn-icon" data-type="NO" onclick="updateReaction('NO')" th:classappend="${reaction != null && reaction.reactionType.name() == 'NO' ? 'active': ''}">
+            <span th:text="${no}">50</span>
+            싫어욧
+        </button>
+        <button class="link-btn-icon" data-type="SAD" onclick="updateReaction('SAD')" th:classappend="${reaction != null && reaction.reactionType.name() == 'SAD' ? 'active': ''}">
+            <span th:text="${sad}">50</span>
+            슬퍼욧
+        </button>
+        <button class="link-btn-icon" data-type="UNBELIEVE" onclick="updateReaction('UNBELIEVE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'UNBELIEVE' ? 'active': ''}">
+            <span th:text="${unbelieve}">50</span>
+            기가막혀욧
+        </button>
+    </div>
+
     <!--  comment  -->
     <div class="comments">
         <h4>댓글</h4>
-        <form action="#" th:action="@{/posts/__${post.idx}__/comment}" method="post" th:object="${comment}">
+        <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}">댓글은 로그인 한 다음에 써주세요 @_@</a>
+        </div>
+        <form action="#" th:name="comment_form" sec:authorize="hasAnyAuthority('BASIC')" th:action="@{/posts/__${post.idx}__/comment}" method="post" th:object="${comment}">
             <div class="comment-wrapper">
-                <input th:field="*{content}" placeholder="댓글..."/>
+                <input th:field="*{content}" placeholder="댓글..." />
             </div>
             <div class="comment-action">
                 <button class="comment-save-btn"><i class="remixicon-check-line"></i></button>
@@ -41,9 +65,13 @@
                     <span class="cell" th:text="${item.content}">1</span>
                     <span class="cell" th:text="${item.createUser.name}">1</span>
                     <span class="cell" th:text="${item.createTime}">1</span>
-                    <span class="cell">
-                        <button th:if="${item.createUser.email == #authentication.name}">삭제</button>
-                    </span>
+                    <form action="#" th:action="@{/comment/delete}" method="post">
+                        <input type="hidden" th:name="commentIdx" th:value="${item.idx}" />
+                        <input type="hidden" th:name="postIdx" th:value="${post.idx}" />
+                        <span class="cell">
+                            <button class="comment-delete-btn" th:if="${item.createUser.email == #authentication.name}">삭제</button>
+                        </span>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -58,4 +86,45 @@
 </main>
 </th:block>
 
+<script layout:fragment="page-script" th:inline="javascript">
+    function updateReaction(type) {
+        var reactionPost = [[ ${post.idx}]];
+        var form = new FormData();
+        form.append('postIdx', reactionPost);
+        form.append('reactionType', type);
+
+        $http.post('/reaction', form).then(function (res) {
+            var data = res.data;
+            document.querySelectorAll('[data-type]').forEach(function (el) {
+                if (el.getAttribute('data-type') !== data.type) {
+                    el.classList.remove('active');
+                } else {
+                    el.classList.add('active');
+                }
+                el.querySelector('span').innerText = data[el.getAttribute('data-type').toLowerCase()];
+            });
+
+        }).catch(function (error) {
+            if (error.response.status === 401) {
+                alert('로...로그인 하야햇!');
+            } else {
+                alert('ㅎㅁ.... 여기 걸리면.... ' + error.response.status);
+            }
+        })
+    }
+
+    document['comment_form'].addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var f = new FormData(this);
+        var msg = f.get('content');
+
+        if (msg.length === 0) {
+            alert('대..댓글을 남겨줫....');
+            return;
+        }
+
+        this.submit();
+    })
+</script>
 </html>

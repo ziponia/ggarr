@@ -29,5 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
-application-*.properties
+*-private.properties
+*-private.yml
 import.sql

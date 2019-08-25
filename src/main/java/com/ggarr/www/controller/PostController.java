@@ -3,8 +3,10 @@ package com.ggarr.www.controller;
 import com.ggarr.www.core.config.security.UserPrincipal;
 import com.ggarr.www.entity.CommentEntity;
 import com.ggarr.www.entity.PostEntity;
+import com.ggarr.www.entity.ReactionEntity;
 import com.ggarr.www.service.CommentService;
 import com.ggarr.www.service.PostService;
+import com.ggarr.www.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -29,6 +33,9 @@ public class PostController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ReactionService reactionService;
 
     @PreAuthorize("hasAnyAuthority('BASIC')")
     @GetMapping(value = "/create")
@@ -62,17 +69,28 @@ public class PostController {
 
     @GetMapping(value = "/posts/{idx}")
     public String postDetail(
-            @PathVariable Integer idx,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PageableDefault(sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable Integer idx,
             Model model
     ) {
         PostEntity entity = postService.findPost(idx);
-        CommentEntity comment = new CommentEntity();
-        Page<CommentEntity> commentList = commentService.findCommentListByPost(idx, pageable);
+
         if (entity == null) {
             return "redirect:/";
         }
+
+        CommentEntity comment = new CommentEntity();
+        Page<CommentEntity> commentList = commentService.findCommentListByPost(idx, pageable);
+        ReactionEntity reactionEntity = reactionService.findReaction(idx, userPrincipal == null ? null : userPrincipal.getIdx());
+
         model.addAttribute("post", entity);
+        model.addAttribute("reaction", reactionEntity);
+        model.addAttribute("like", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.LIKE));
+        model.addAttribute("sad", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.SAD));
+        model.addAttribute("no", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.NO));
+        model.addAttribute("unbelieve", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.UNBELIEVE));
+        model.addAttribute("userPrincipal", userPrincipal);
         model.addAttribute("comment", comment);
         model.addAttribute("commentList", commentList);
         return "post-detail";
@@ -83,10 +101,22 @@ public class PostController {
     public void createComment(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable Integer postIdx,
-            HttpServletResponse  response,
+            HttpServletResponse response,
             CommentEntity comment
     ) throws IOException {
         CommentEntity entity = commentService.save(comment, postIdx, userPrincipal.getIdx());
+        response.sendRedirect("/posts/" + postIdx);
+    }
+
+    @PostMapping(value = "/comment/delete")
+    public void removeComment(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam Integer postIdx,
+            @RequestParam Integer commentIdx,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        commentService.deleteComment(commentIdx, userPrincipal);
         response.sendRedirect("/posts/" + postIdx);
     }
 }

@@ -7,6 +7,7 @@
     <main class="auth-page">
         <form th:action="@{/auth/login}" class="in-form" th:object="${user}" method="post">
             <h4>@_@ 입장하기.</h4>
+            <input th:if="${#httpServletRequest.getParameter('redirect_url') != null}" type="hidden" th:name="redirect_url" th:value="${#httpServletRequest.getParameter('redirect_url')}"/>
             <input type="text" class="email" th:field="*{email}" placeholder="@" />
             <input type="password" class="email" name="password" th:field="*{password}" placeholder="****" />
             <button class="submit-btn"><i class="remixicon-arrow-left-up-line"></i> 입장</button>

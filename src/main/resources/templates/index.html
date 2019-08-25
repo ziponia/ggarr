@@ -19,8 +19,8 @@
             th:text="'#' + ${#httpServletRequest.getParameter('query')}">
             꺄르륵 꺄르륵
         </h1>
-        <form action="#">
-            <input type="text" placeholder="??!" class="search-field" name="query" th:value="${query}"/>
+        <form action="#" th:action="@{/}" method="get">
+            <input type="text" placeholder="재밌는 글을 찾아욧" class="search-field" name="query" th:value="${query}"/>
         </form>
     </header>
 <main class="main-page">
@@ -47,9 +47,8 @@
                 <span class="cell" th:text="${post.createUser.name}">화염의지배자불닭보끔</span>
             </li>
         </ul>
-        <div class="pagination_wrap">
+        <div class="pagination_wrap" th:if="${postList.totalElements > 0}">
             <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
-                <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
                 <li class="disabled aa"><a href="#" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
                 <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
             </ul>

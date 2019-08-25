@@ -1,0 +1,19 @@
+package com.ggarr.www.core.config.security.handlers;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Configuration
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        response.sendRedirect("/auth/login?redirect_url=" + request.getRequestURL());
+    }
+}

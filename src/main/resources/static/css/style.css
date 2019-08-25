@@ -15,6 +15,31 @@ a {
     text-decoration: none;
 }
 
+/* Loading */
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.pace-inactive {
+    display: none;
+}
+
+.pace .pace-progress {
+    background: #6060e0;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 2px;
+}
+
+
 .space {
     flex: 1;
 }
@@ -23,7 +48,7 @@ input:focus, button:focus, textarea:focus {
     outline: none;
 }
 
-h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li {
+h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li, mark, button {
     font-family: 'Gamja Flower', cursive;
     font-size: 1em;
 }
@@ -35,22 +60,35 @@ h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li {
 }
 
 .toolbar {
-    width: 1200px;
+    width: 960px;
     margin: 50px auto auto auto;
+    display: flex;
 }
 
 .toolbar .user-btn {
-    font-size: 44px;
+    font-size: 1.2em;
     color: #cccccc;
     border-radius: 44px;
+    margin-right: 20px;
+}
+
+.toolbar .logout-btn {
+    color: #cccccc;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 .toolbar .user-btn:hover {
     color: #6060e0;
 }
 
+.toolbar .logout-btn:hover {
+    color: #6060e0;
+}
+
 header {
-    width: 1200px;
+    width: 960px;
     font-size: 2em;
     text-align: center;
     margin: auto auto 100px;
@@ -81,7 +119,7 @@ header form .search-field:focus {
 }
 
 main {
-    width: 1200px;
+    width: 960px;
     margin: auto;
 }
 
@@ -163,6 +201,27 @@ ul.table li.table-row .cell {
     display: table-cell;
     border-bottom: 1px solid #dddddd;;
 }
+
+ul.table li.table-row .cell.cell-5 { width: 5%; }
+ul.table li.table-row .cell.cell-10 { width: 10%; }
+ul.table li.table-row .cell.cell-15 { width: 15%; }
+ul.table li.table-row .cell.cell-20 { width: 20%; }
+ul.table li.table-row .cell.cell-25 { width: 25%; }
+ul.table li.table-row .cell.cell-30 { width: 30%; }
+ul.table li.table-row .cell.cell-35 { width: 35%; }
+ul.table li.table-row .cell.cell-40 { width: 40%; }
+ul.table li.table-row .cell.cell-45 { width: 45%; }
+ul.table li.table-row .cell.cell-50 { width: 50%; }
+ul.table li.table-row .cell.cell-55 { width: 55%; }
+ul.table li.table-row .cell.cell-60 { width: 60%; }
+ul.table li.table-row .cell.cell-65 { width: 65%; }
+ul.table li.table-row .cell.cell-70 { width: 70%; }
+ul.table li.table-row .cell.cell-75 { width: 75%; }
+ul.table li.table-row .cell.cell-80 { width: 80%; }
+ul.table li.table-row .cell.cell-85 { width: 85%; }
+ul.table li.table-row .cell.cell-90 { width: 90%; }
+ul.table li.table-row .cell.cell-95 { width: 95%; }
+ul.table li.table-row .cell.cell-100 { width: 100%; }
 
 .main-table {
     font-size: 1em;
@@ -254,6 +313,11 @@ ul.table li.table-row .cell {
 
 }
 
+.link-btn-icon {
+    background-color: transparent;
+    border: 0;
+}
+
 .link-btn-icon i {
     border: 3px solid #cccccc;
     border-radius: 2em;
@@ -272,6 +336,12 @@ ul.table li.table-row .cell {
     margin-bottom: 100px;
     border-bottom: 1px solid #eeeeee;
     padding-bottom: 100px;
+}
+
+.detail-page .comments {
+    background-color: #eeeeee;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .detail-page .comments h4 {
@@ -300,22 +370,59 @@ ul.table li.table-row .cell {
 
 .detail-page .comment-action .comment-save-btn {
     border: 0;
-    background-color: #ffffff;
+    background-color: transparent;
     color: #cccccc;
 }
 
 .detail-page .comment-action .comment-save-btn i {
-    font-size: 4em;
+    font-size: 3em;
     border-radius: 10px;
-    border: 1px solid #eeeeee;
+    border: 1px solid #dee3eb;
+    background-color: #ffffff;
 }
 
 .detail-page .comment-action .comment-save-btn:hover i {
     color: #6060e0;
-    border: 1px solid #6060e0;
+    border: 1px solid #dee3eb;
     cursor: pointer;
 }
 
 .detail-page .comment-lists {
     margin-bottom: 30px;
+}
+
+.detail-page .comment-lists form {
+    display: table-row;
+}
+
+.detail-page .comment-lists .comment-delete-btn {
+    border: 0;
+    background-color: #6060e0;
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.detail-page .reaction-block {
+    margin-bottom: 30px;
+}
+
+.detail-page .reaction-block button {
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    border-radius: 3em;
+    border: 1px solid #cccccc;
+    color: #cccccc;
+    cursor: pointer;
+}
+
+.detail-page .reaction-block button.active {
+    border: 1px solid #6060e0;
+    color: #6060e0;
+}
+
+.detail-page .reaction-block button[data-type] span {
+    display: block;
 }

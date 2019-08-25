@@ -26,6 +26,8 @@ public class CommentEntity {
     @ManyToOne(targetEntity = UserEntity.class)
     private UserEntity createUser;
 
+
+
     @CreationTimestamp
     private Date createTime;
 

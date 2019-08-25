@@ -8,22 +8,25 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Gamja+Flower&display=swap" rel="stylesheet" />
         <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/black/pace-theme-minimal.min.css" />
         <link rel="stylesheet" href="/static/css/style.css" />
     </th:block>
 
     <th:block th:fragment="scripts">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
         <script src="/static/script/script.js"></script>
-        <script>
-            // common
-        </script>
     </th:block>
 
     <th:block th:fragment="toolbar">
         <div class="toolbar">
-            <a sec:authorize="${!hasAnyAuthority('BASIC')}" href="/auth/login" class="user-btn"><i class="remixicon-user-line"></i></a>
-            <a sec:authorize="${hasAnyAuthority('BASIC')}" href="/" class="user-btn" sec:authentication="name"><i class="remixicon-user-line"></i></a>
+            <span class="space"></span>
+            <a sec:authorize="${!isAuthenticated()}" th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}" class="user-btn"><i class="remixicon-user-line"></i></a>
+            <a sec:authorize="${isAuthenticated()}" href="/" class="user-btn" sec:authentication="name"><i class="remixicon-user-line"></i></a>
+            <form sec:authorize="${isAuthenticated()}" action="#" th:action="@{/auth/logout}" method="post">
+                <button class="logout-btn" type="submit">로그아웃</button>
+            </form>
         </div>
     </th:block>
 </html>

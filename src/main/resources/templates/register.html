@@ -29,6 +29,7 @@
 
             var email = form.get('email');
             var password = form.get('password');
+            var password_confirm = form.get('password-confirm');
 
             if (email.length === 0) {
                 alert('이메일을 입력 해주세요...');
@@ -37,6 +38,11 @@
 
             if (password.length === 0) {
                 alert('비밀번호를 입력 해주세요...');
+                return;
+            }
+
+            if (password !== password_confirm) {
+                alert('비밀번호 두개가 달라욧');
                 return;
             }
 
