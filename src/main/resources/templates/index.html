@@ -10,7 +10,15 @@
 </th:block>
 <th:block layout:fragment="content">
     <header>
-        <h1 class="logo">꺄르륵 꺄르륵</h1>
+        <h1 class="logo"
+            th:if="${#httpServletRequest.getParameter('query') == null || #httpServletRequest.getParameter('query').length() == 0}">
+            꺄르륵 꺄르륵
+        </h1>
+        <h1 class="logo"
+            th:unless="${#httpServletRequest.getParameter('query') == null || #httpServletRequest.getParameter('query').length() == 0}"
+            th:text="'#' + ${#httpServletRequest.getParameter('query')}">
+            꺄르륵 꺄르륵
+        </h1>
         <form action="#">
             <input type="text" placeholder="??!" class="search-field" name="query" th:value="${query}"/>
         </form>
@@ -25,6 +33,7 @@
                 <span class="cell">내용</span>
                 <span class="cell">꺄르륵</span>
                 <span class="cell">@_@</span>
+                <span class="cell"><i class="remixicon-discuss-line"></i></span>
                 <span class="cell">네임</span>
             </li>
             <li class="table-row" th:each="post,index : ${postList}">
@@ -34,6 +43,7 @@
                 </span>
                 <span class="cell">35</span>
                 <span class="cell">150</span>
+                <span class="cell" th:text="${post.commentCount}"></span>
                 <span class="cell" th:text="${post.createUser.name}">화염의지배자불닭보끔</span>
             </li>
         </ul>

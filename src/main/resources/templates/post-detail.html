@@ -2,6 +2,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sd="http://www.thymeleaf.org/spring-data"
       layout:decorate="~{layout/main}">
 
 <th:block th:replace="toolbar">
@@ -26,6 +27,33 @@
     <!--  comment  -->
     <div class="comments">
         <h4>댓글</h4>
+        <form action="#" th:action="@{/posts/__${post.idx}__/comment}" method="post" th:object="${comment}">
+            <div class="comment-wrapper">
+                <input th:field="*{content}" placeholder="댓글..."/>
+            </div>
+            <div class="comment-action">
+                <button class="comment-save-btn"><i class="remixicon-check-line"></i></button>
+            </div>
+        </form>
+        <div class="comment-lists">
+            <ul class="table">
+                <li class="table-row" th:each="item, index : ${commentList}">
+                    <span class="cell" th:text="${item.content}">1</span>
+                    <span class="cell" th:text="${item.createUser.name}">1</span>
+                    <span class="cell" th:text="${item.createTime}">1</span>
+                    <span class="cell">
+                        <button th:if="${item.createUser.email == #authentication.name}">삭제</button>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="pagination_wrap">
+            <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
+                <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                <li class="disabled aa"><a href="#" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div>
     </div>
 </main>
 </th:block>

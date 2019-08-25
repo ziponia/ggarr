@@ -19,7 +19,7 @@ a {
     flex: 1;
 }
 
-input:focus, button:focus {
+input:focus, button:focus, textarea:focus {
     outline: none;
 }
 
@@ -272,4 +272,50 @@ ul.table li.table-row .cell {
     margin-bottom: 100px;
     border-bottom: 1px solid #eeeeee;
     padding-bottom: 100px;
+}
+
+.detail-page .comments h4 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+}
+
+.detail-page .comment-wrapper input {
+    width: 100%;
+    padding: 5px;
+    border: 0;
+    border-bottom: 1px solid #eeeeee;
+    box-sizing: border-box;
+    resize: none;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.detail-page .comment-wrapper input:focus {
+    border-bottom: 1px solid #6060e0;
+}
+
+.detail-page .comment-action {
+    text-align: right;
+}
+
+.detail-page .comment-action .comment-save-btn {
+    border: 0;
+    background-color: #ffffff;
+    color: #cccccc;
+}
+
+.detail-page .comment-action .comment-save-btn i {
+    font-size: 4em;
+    border-radius: 10px;
+    border: 1px solid #eeeeee;
+}
+
+.detail-page .comment-action .comment-save-btn:hover i {
+    color: #6060e0;
+    border: 1px solid #6060e0;
+    cursor: pointer;
+}
+
+.detail-page .comment-lists {
+    margin-bottom: 30px;
 }

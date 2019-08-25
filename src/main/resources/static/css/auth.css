@@ -48,6 +48,7 @@
     color: #6060e0;
     cursor: pointer;
     margin-bottom: 20px;
+    background-color: #eeeeee;
 }
 
 .auth-page .in-form .submit-btn:hover {

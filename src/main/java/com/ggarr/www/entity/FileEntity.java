@@ -1,5 +1,6 @@
 package com.ggarr.www.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,28 +8,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "tbl_post")
 @Getter
 @Setter
-public class PostEntity {
+@Builder
+@Table(name = "tbl_file")
+public class FileEntity {
 
     @Id
     @GeneratedValue
     private Integer idx;
 
-    private String title;
+    private String filePath;
 
-    @Column(columnDefinition = "TEXT")
-    private String content;
+    private String fileName;
+
+    private String originalName;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    private UserEntity createUser;
+    private UserEntity uploader;
 
-    @OneToMany(targetEntity = CommentEntity.class, mappedBy = "post")
-    private List<CommentEntity> comments;
+    @ManyToOne(targetEntity = PostEntity.class)
+    private PostEntity postEntity;
+
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
+
+    private Long fileSize;
 
     @CreationTimestamp
     private Date createTime;
@@ -36,7 +43,8 @@ public class PostEntity {
     @UpdateTimestamp
     private Date updateTime;
 
-    public int getCommentCount() {
-        return comments.size();
+    public enum FileType {
+        IMAGE,
+        FILE
     }
 }

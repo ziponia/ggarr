@@ -10,6 +10,7 @@
 <body>
 <main class="write-page">
     <form th:action="@{/create}" th:object="${post}" method="post">
+        <input type="hidden" th:field="*{idx}" readonly/>
         <div class="container write">
             <div class="action">
                 <a class="back-btn action-btn" href="/">
@@ -34,12 +35,15 @@
         placeholderText: '꺄르륵 꺄르륵',
         fontSize: ['8', '10', '12', '14', '18', '30', '60', '96'],
         language: 'ko',
-        imageUploadURL: '/ddd',
+        imageUploadURL: '/file-upload',
+        requestHeaders: {
+            'X-CSRF-TOKEN': document.getElementById('_csrf').getAttribute('value')
+        },
         fileUpload: true,
-        fileUploadParam: 'file_param',
+        fileUploadParam: 'file',
 
         // Set the file upload URL.
-        fileUploadURL: '/upload_file',
+        fileUploadURL: '/thirdparty/upload',
 
         // Additional upload params.
         fileUploadParams: {id: 'my_editor'},

@@ -1,9 +1,15 @@
 package com.ggarr.www.controller;
 
 import com.ggarr.www.core.config.security.UserPrincipal;
+import com.ggarr.www.entity.CommentEntity;
 import com.ggarr.www.entity.PostEntity;
+import com.ggarr.www.service.CommentService;
 import com.ggarr.www.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,9 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
     @PreAuthorize("hasAnyAuthority('BASIC')")
     @GetMapping(value = "/create")
@@ -54,13 +63,30 @@ public class PostController {
     @GetMapping(value = "/posts/{idx}")
     public String postDetail(
             @PathVariable Integer idx,
+            @PageableDefault(sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
             Model model
-    ) throws IOException {
+    ) {
         PostEntity entity = postService.findPost(idx);
+        CommentEntity comment = new CommentEntity();
+        Page<CommentEntity> commentList = commentService.findCommentListByPost(idx, pageable);
         if (entity == null) {
             return "redirect:/";
         }
         model.addAttribute("post", entity);
+        model.addAttribute("comment", comment);
+        model.addAttribute("commentList", commentList);
         return "post-detail";
+    }
+
+    @PreAuthorize("hasAnyAuthority('BASIC')")
+    @PostMapping(value = "/posts/{postIdx}/comment")
+    public void createComment(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable Integer postIdx,
+            HttpServletResponse  response,
+            CommentEntity comment
+    ) throws IOException {
+        CommentEntity entity = commentService.save(comment, postIdx, userPrincipal.getIdx());
+        response.sendRedirect("/posts/" + postIdx);
     }
 }
