@@ -17,8 +17,13 @@
     <div class="action">
         <a href="/" class="link-btn-icon"><i class="remixicon-arrow-left-line"></i></a>
         <span class="space"></span>
-        <a th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10"><i class="remixicon-edit-line"></i></a>
-        <a href="/create" class="link-btn-icon"><i class="remixicon-pencil-line"></i></a>
+        <form action="#" th:object="${post}" th:action="@{/posts/archive}" method="post">
+            <input type="hidden" th:field="*{idx}"/>
+            <input type="hidden" th:name="publish" th:value="false" />
+            <button th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10" title="아카이브로 이동"><i class="remixicon-archive-line"></i></button>
+        </form>
+        <a th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10" title="글 수정"><i class="remixicon-edit-line"></i></a>
+        <a href="/create" class="link-btn-icon" title="새 글"><i class="remixicon-pencil-line"></i></a>
     </div>
 
     <div class="content" th:utext="${post.content}">
@@ -65,25 +70,26 @@
                     <span class="cell" th:text="${item.content}">1</span>
                     <span class="cell" th:text="${item.createUser.name}">1</span>
                     <span class="cell" th:text="${item.createTime}">1</span>
-                    <form action="#" th:action="@{/comment/delete}" method="post">
-                        <input type="hidden" th:name="commentIdx" th:value="${item.idx}" />
-                        <input type="hidden" th:name="postIdx" th:value="${post.idx}" />
-                        <span class="cell">
-                            <button class="comment-delete-btn" th:if="${item.createUser.email == #authentication.name}">삭제</button>
-                        </span>
-                    </form>
+                    <span class="cell">
+                        <button class="comment-delete-btn" th:if="${item.createUser.email == #authentication.name}" th:onclick="|deleteComment(${item.idx})|">삭제</button>
+                    </span>
                 </li>
             </ul>
         </div>
-        <div class="pagination_wrap">
+        <div class="pagination_wrap" th:if="${commentList.totalElements > 0}">
             <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
                 <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
-                <li class="disabled aa"><a href="#" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
                 <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
             </ul>
         </div>
     </div>
+
 </main>
+<form action="#" th:action="@{/comment/delete}" method="post" name="comment-delete-form" style="display: none;">
+    <input type="hidden" name="commentIdx" id="commentIdx"/>
+    <input type="hidden" name="postIdx" th:value="${post.idx}" id="postIdx"/>
+</form>
 </th:block>
 
 <script layout:fragment="page-script" th:inline="javascript">
@@ -125,6 +131,19 @@
         }
 
         this.submit();
-    })
+    });
+
+    function deleteComment(commentId) {
+        var input = confirm('정말 지울 꺼에욧?');
+        if (input) {
+            var doc = document['comment-delete-form'];
+            doc.commentIdx.value = commentId;
+            var form = new FormData(doc);
+            doc.submit();
+            return;
+        }
+
+        return;
+    }
 </script>
 </html>

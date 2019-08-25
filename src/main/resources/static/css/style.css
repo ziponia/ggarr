@@ -48,6 +48,11 @@ input:focus, button:focus, textarea:focus {
     outline: none;
 }
 
+/* Link Style */
+a, button {
+    cursor: pointer;
+}
+
 h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li, mark, button {
     font-family: 'Gamja Flower', cursive;
     font-size: 1em;

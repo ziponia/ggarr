@@ -108,15 +108,14 @@ public class PostController {
         response.sendRedirect("/posts/" + postIdx);
     }
 
-    @PostMapping(value = "/comment/delete")
-    public void removeComment(
+    @PreAuthorize("hasAnyAuthority('BASIC')")
+    @PostMapping(value = "/posts/archive")
+    public void archivePost(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestParam Integer postIdx,
-            @RequestParam Integer commentIdx,
-            HttpServletRequest request,
+            PostEntity entity,
             HttpServletResponse response
     ) throws IOException {
-        commentService.deleteComment(commentIdx, userPrincipal);
-        response.sendRedirect("/posts/" + postIdx);
+        postService.archivePost(entity, userPrincipal);
+        response.sendRedirect("/");
     }
 }

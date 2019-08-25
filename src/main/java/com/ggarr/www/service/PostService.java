@@ -11,4 +11,6 @@ public interface PostService {
     PostEntity findPost(Integer idx);
 
     Page<PostEntity> findAllPost(Pageable pageable);
+
+    PostEntity archivePost(PostEntity entity, UserPrincipal userPrincipal);
 }

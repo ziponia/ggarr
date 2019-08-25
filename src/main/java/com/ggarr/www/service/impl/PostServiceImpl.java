@@ -39,4 +39,15 @@ public class PostServiceImpl implements PostService {
     public Page<PostEntity> findAllPost(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
+
+    @Override
+    public PostEntity archivePost(PostEntity entity, UserPrincipal userPrincipal) {
+        PostEntity dbEntity = postRepository.getOne(entity.getIdx());
+        dbEntity.setPublish(entity.isPublish());
+        if (!dbEntity.getCreateUser().getIdx().equals(userPrincipal.getIdx())) {
+            return null;
+        }
+        postRepository.save(dbEntity);
+        return entity;
+    }
 }

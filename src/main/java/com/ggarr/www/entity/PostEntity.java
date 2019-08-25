@@ -2,6 +2,7 @@ package com.ggarr.www.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,6 +24,9 @@ public class PostEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @ColumnDefault("true")
+    private boolean publish = true;
 
     @ManyToOne(targetEntity = UserEntity.class)
     private UserEntity createUser;
