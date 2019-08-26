@@ -28,6 +28,9 @@ public class PostEntity {
     @ColumnDefault("true")
     private boolean publish = true;
 
+    @ColumnDefault("0")
+    private int viewCount;
+
     @ManyToOne(targetEntity = UserEntity.class)
     private UserEntity createUser;
 
