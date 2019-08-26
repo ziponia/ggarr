@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <aws.sdk.version>2.5.56</aws.sdk.version>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <dependencies>
@@ -100,10 +101,16 @@
             <artifactId>s3</artifactId>
             <version>${aws.sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 
     </dependencies>
 
     <build>
+        <finalName>ggarr</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

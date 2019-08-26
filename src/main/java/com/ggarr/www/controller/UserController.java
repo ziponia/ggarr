@@ -34,7 +34,11 @@ public class UserController {
     public void register(UserEntity userEntity, HttpServletResponse response) throws IOException {
         String n_password = userEntity.getPassword();
         UserEntity entity = userService.addUser(userEntity);
-        userService.authenticateUser(entity.getEmail(), n_password);
-        response.sendRedirect("/");
+        if (entity == null) {
+            response.sendRedirect("/auth/register");
+        } else {
+            userService.authenticateUser(entity.getEmail(), n_password);
+            response.sendRedirect("/");
+        }
     }
 }

@@ -10,4 +10,6 @@ public interface UserService {
     UserEntity addUser(UserEntity userEntity);
 
     Authentication authenticateUser(String email, String password);
+
+    boolean checkAllowUser(String email, String name, String password);
 }

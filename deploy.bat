@@ -1,0 +1,1 @@
+eb deploy -l %date%T%time%

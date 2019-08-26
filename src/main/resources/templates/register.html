@@ -9,8 +9,8 @@
             <h4>@_@ 가입하기.</h4>
             <input type="text" class="email" name="email" th:field="*{email}" placeholder="* my@email.com" />
             <input type="text" class="name" name="name" th:field="*{name}" placeholder="* 화염의지배자불닭볶음" />
-            <input type="password" class="email" name="password-confirm" placeholder="****" />
-            <input type="password" class="email" name="password" th:field="*{password}" placeholder="**** - 확인" />
+            <input type="password" class="email" name="password-confirm" placeholder="비밀번홋 8자 이상 문자 숫자 특수문자 포함해서 해주세욧" />
+            <input type="password" class="email" name="password" th:field="*{password}" placeholder="비밀번홋 - 확인" />
             <button class="submit-btn"><i class="remixicon-arrow-left-up-line"></i> 가입</button>
 
             <div class="other-block">
@@ -27,17 +27,24 @@
             e.preventDefault();
             var form = new FormData(this);
 
+            var _that = this;
             var email = form.get('email');
+            var name = form.get('name');
             var password = form.get('password');
             var password_confirm = form.get('password-confirm');
 
             if (email.length === 0) {
-                alert('이메일을 입력 해주세요...');
+                alert('이메일을 입력 해주세욧...');
+                return;
+            }
+
+            if (name.length === 0) {
+                alert('닉네임이 있어야 해욧');
                 return;
             }
 
             if (password.length === 0) {
-                alert('비밀번호를 입력 해주세요...');
+                alert('비밀번호를 입력 해주세욧...');
                 return;
             }
 
@@ -46,7 +53,15 @@
                 return;
             }
 
-            this.submit();
+            $http.post('/auth/check-params', form, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(function (response) {
+                _that.submit();
+            }).catch(function(err) {
+                alert(err.response.data.message);
+            });
         })
     </script>
 </th:block>
