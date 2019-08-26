@@ -94,13 +94,14 @@ public class PostServiceImpl implements PostService {
             postViewEntity.setUserIdx(userPrincipal == null ? null : userPrincipal.getIdx());
             postViewEntity.setSessionId(sessionId);
             postViewEntity.setViewerType(userPrincipal == null ? PostViewEntity.ViewerType.SESSION : PostViewEntity.ViewerType.USER);
+
             em.persist(postViewEntity);
+
+            long count = em.createQuery("select count(v.postIdx) from PostViewEntity v where v.postIdx = :postIdx", Long.class)
+                    .setParameter("postIdx", postIdx)
+                    .getSingleResult();
+
+            postRepository.updatePostViewerCount(postIdx, (int) count);
         }
-
-        long count = em.createQuery("select count(v.postIdx) from PostViewEntity v where v.postIdx = :postIdx", Long.class)
-                .setParameter("postIdx", postIdx)
-                .getSingleResult();
-
-        postRepository.updatePostViewerCount(postIdx, (int) count);
     }
 }
