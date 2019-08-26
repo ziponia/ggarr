@@ -2,6 +2,7 @@ package com.ggarr.www.service.impl;
 
 import com.ggarr.www.core.config.security.UserPrincipal;
 import com.ggarr.www.entity.PostEntity;
+import com.ggarr.www.entity.PostViewEntity;
 import com.ggarr.www.entity.UserEntity;
 import com.ggarr.www.repository.PostRepository;
 import com.ggarr.www.repository.UserRepository;
@@ -11,9 +12,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private PostRepository postRepository;
@@ -49,5 +62,39 @@ public class PostServiceImpl implements PostService {
         }
         postRepository.save(dbEntity);
         return entity;
+    }
+
+    @Override
+    @Transactional
+    public void saveViewer(Integer postIdx, UserPrincipal userPrincipal) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String sessionId = request.getSession().getId();
+        PostViewEntity postViewEntity;
+        TypedQuery<PostViewEntity> query;
+
+        if (userPrincipal == null) {
+            query = em.createQuery("select v from PostViewEntity v where v.sessionId = :sessionId and v.postIdx = :postIdx", PostViewEntity.class)
+                    .setParameter("sessionId", sessionId)
+                    .setParameter("postIdx", postIdx);
+        } else {
+            query = em.createQuery("select v from PostViewEntity v where v.postIdx = :postIdx and v.userIdx = :userIdx", PostViewEntity.class)
+                    .setParameter("postIdx", postIdx)
+                    .setParameter("userIdx", userPrincipal.getIdx());
+        }
+
+        try {
+            postViewEntity = query
+                    .getSingleResult();
+            postViewEntity.setUpdateTime(new Date());
+
+            em.merge(postViewEntity);
+        } catch (NoResultException e) {
+            postViewEntity = new PostViewEntity();
+            postViewEntity.setPostIdx(postIdx);
+            postViewEntity.setUserIdx(userPrincipal == null ? null : userPrincipal.getIdx());
+            postViewEntity.setSessionId(sessionId);
+            postViewEntity.setViewerType(userPrincipal == null ? PostViewEntity.ViewerType.SESSION : PostViewEntity.ViewerType.USER);
+            em.persist(postViewEntity);
+        }
     }
 }

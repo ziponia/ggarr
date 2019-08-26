@@ -119,31 +119,29 @@
         })
     }
 
-    document['comment_form'].addEventListener('submit', function (e) {
-        e.preventDefault();
+    if (!!document['comment_form']) {
+        document['comment_form'].addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        var f = new FormData(this);
-        var msg = f.get('content');
+            var f = new FormData(this);
+            var msg = f.get('content');
 
-        if (msg.length === 0) {
-            alert('대..댓글을 남겨줫....');
-            return;
-        }
+            if (msg.length === 0) {
+                alert('대..댓글을 남겨줫....');
+                return;
+            }
 
-        this.submit();
-    });
+            this.submit();
+        });
+    }
 
     function deleteComment(commentId) {
         var input = confirm('정말 지울 꺼에욧?');
         if (input) {
             var doc = document['comment-delete-form'];
             doc.commentIdx.value = commentId;
-            var form = new FormData(doc);
             doc.submit();
-            return;
         }
-
-        return;
     }
 </script>
 </html>

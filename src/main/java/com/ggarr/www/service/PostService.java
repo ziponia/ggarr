@@ -13,4 +13,6 @@ public interface PostService {
     Page<PostEntity> findAllPost(Pageable pageable);
 
     PostEntity archivePost(PostEntity entity, UserPrincipal userPrincipal);
+
+    void saveViewer(Integer postIdx, UserPrincipal userPrincipal);
 }
