@@ -3,63 +3,105 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:replace="fragment/common :: meta" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.5/css/froala_editor.pkgd.min.css" />
     <th:block th:replace="fragment/common :: head"/>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-editor {
+            min-height: 400px;
+        }
+    </style>
     <title>모두가 웃는 소리 :: 꺄르륵</title>
 </head>
 <body>
 <main class="write-page">
-    <form th:action="@{/create}" th:object="${post}" method="post">
+    <form th:action="@{/create}" th:object="${post}" method="post" th:name="post-form">
         <input type="hidden" th:field="*{idx}" readonly/>
         <div class="container write">
             <div class="action">
                 <a class="back-btn action-btn" href="/">
                     <i class="remixicon-arrow-left-line"></i>
                 </a>
-                <button class="save-btn action-btn" onclick="save()">
+                <button class="save-btn action-btn" type="submit">
                     <i class="remixicon-check-line"></i>
                 </button>
             </div>
             <input type="text" class="create-title" placeholder="어떤 제목으로 글을 쓸까?" th:field="*{title}"/>
-            <textarea name="content" id="editor" th:field="*{content}"></textarea>
+            <div id="editor" th:utext="*{content}"></div>
+            <textarea id="content" th:field="*{content}" cols="30" rows="10" style="display: none"></textarea>
         </div>
     </form>
+    <input type="file" style="display: none;" id="file"/>
 </main>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.5/js/froala_editor.pkgd.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.3/js/languages/ko.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.3/js/plugins/file.min.js"></script>
 <th:block th:replace="fragment/common :: script"/>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    var option = {
-        heightMin: 200,
-        placeholderText: '꺄르륵 꺄르륵',
-        fontSize: ['8', '10', '12', '14', '18', '30', '60', '96'],
-        language: 'ko',
-        imageUploadURL: '/file-upload',
-        requestHeaders: {
-            'X-CSRF-TOKEN': document.getElementById('_csrf').getAttribute('value')
+    var editor = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{header: [1, 2, 3, 4, false]}],
+                ['bold', 'italic', 'link', 'blockquote', 'code-block'],
+                ['image', 'video'],
+                [{
+                    list: 'ordered'
+                }, {
+                    list: 'bullet'
+                }]
+            ]
         },
-        fileUpload: true,
-        fileUploadParam: 'file',
+        placeholder: '꺄르륵꺄르륵 오늘은 어쩌고 저쩌고'
+    });
 
-        // Set the file upload URL.
-        fileUploadURL: '/file-upload',
+    editor.getModule('toolbar').addHandler('image', uploadImage);
+    
+    function uploadImage(e) {
+        var input = document.getElementById('file');
+        input.click();
 
-        // Set request type.
-        fileUploadMethod: 'POST',
+        input.onchange = function (ev) {
+            var f = new FormData();
+            var file = input.files;
 
-        // Set max file size to 20MB.
-        fileMaxSize: 20 * 1024 * 1024,
+            if (file.length > 0) {
+                f.append('file', file[0]);
 
-        // Allow to upload any file.
-        fileAllowedTypes: ['*']
-    };
-
-    var editor = new FroalaEditor('#editor', option);
-
-    function save() {
-        console.log(editor.save.save());
+                $http.post('/file-upload', f, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (res) {
+                    var range = editor.getSelection();
+                    editor.insertEmbed(range.index, 'image', res.data.link);
+                }).catch(function (reason) {
+                    alert('제발 여기는 걸리지 말자...');
+                });
+            }
+        }
     }
+
+    document['post-form'].addEventListener('submit', function (e) {
+        e.preventDefault();
+        document.getElementById('content').innerText = document.querySelector('.ql-editor').innerHTML;
+
+        var f = new FormData(this);
+        var title = f.get('title');
+        var content = f.get('content');
+        var errors = [];
+
+        if (title.length === 0) {
+            errors.push('title');
+        }
+        if (content.length === 0) {
+            errors.push('content');
+        }
+
+        if (errors.length > 0) {
+            alert('제목이랑 내용을 써주세욧');
+            return;
+        }
+
+        this.submit();
+    })
 </script>
 </body>
 </html>
