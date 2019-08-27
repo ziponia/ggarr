@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -36,19 +37,23 @@ public class FileServiceImpl implements FileService {
     public FileEntity upload(MultipartFile file, UserPrincipal uploader) throws IOException {
 
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
         FileEntity.FileType fileType = FileEntity.FileType.FILE;
-        UserEntity uploadUser = userRepository.findById(uploader.getIdx()).orElse(null);
+        UserEntity uploadUser = userRepository.getOne(uploader.getIdx());
+
+        String contentType = file.getContentType();
+        assert contentType != null;
+        if (contentType.startsWith("image")) {
+            fileType = FileEntity.FileType.IMAGE;
+        }
+
 
         String key = new Date().getTime() + "-" + UUID.randomUUID().toString() + "." + extension;
         s3Service.upload(file, key);
         URL url = s3Service.getUrl(key);
 
-        String contentType = file.getContentType();
+        // 이미지 정보를 가져옵니다.
 
-        assert contentType != null;
-        if (contentType.startsWith("image")) {
-            fileType = FileEntity.FileType.IMAGE;
-        }
         FileEntity fileEntity = FileEntity.builder()
                 .fileType(fileType)
                 .fileName(key)
@@ -60,5 +65,12 @@ public class FileServiceImpl implements FileService {
 
         fileRepository.save(fileEntity);
         return fileEntity;
+    }
+
+    private static void resizeImage(MultipartFile file) throws IOException {
+        BufferedImage io = ImageIO.read(file.getInputStream());
+
+        io.getWidth();
+        io.getHeight();
     }
 }
