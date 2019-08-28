@@ -1,7 +1,9 @@
 package com.ggarr.www.service.impl;
 
 import com.ggarr.www.core.config.security.UserPrincipal;
+import com.ggarr.www.entity.PostEntity;
 import com.ggarr.www.entity.ReactionEntity;
+import com.ggarr.www.entity.UserEntity;
 import com.ggarr.www.repository.PostRepository;
 import com.ggarr.www.repository.UserRepository;
 import com.ggarr.www.service.ReactionService;
@@ -39,8 +41,11 @@ public class ReactionServiceImpl implements ReactionService {
             return null;
         }
 
-        reactionEntity.setPostId(postIdx);
-        reactionEntity.setUserId(userPrincipal.getIdx());
+        PostEntity postEntity = postRepository.getOne(postIdx);
+        UserEntity userEntity = userRepository.getOne(userPrincipal.getIdx());
+
+        reactionEntity.setPostId(postEntity);
+        reactionEntity.setUserId(userEntity);
         reactionEntity.setReactionType(reactionType);
         em.persist(reactionEntity);
         return reactionEntity;
@@ -53,7 +58,7 @@ public class ReactionServiceImpl implements ReactionService {
 
     private ReactionEntity findReactionQuery(Integer postIdx, Integer userIdx) {
         try {
-            return em.createQuery("select vo from ReactionEntity vo where vo.postId = :postId and vo.userId = :userId", ReactionEntity.class)
+            return em.createQuery("select vo from ReactionEntity vo where vo.postId.idx = :postId and vo.userId.idx = :userId", ReactionEntity.class)
                     .setParameter("postId", postIdx)
                     .setParameter("userId", userIdx)
                     .getSingleResult();
@@ -65,9 +70,20 @@ public class ReactionServiceImpl implements ReactionService {
     @Override
     public long countReactionByPost(Integer postIdx, ReactionEntity.ReactionType type) {
         try {
-            return em.createQuery("select count(vo.postId) from ReactionEntity vo where vo.postId = :postIdx and vo.reactionType = :reactionType", Long.class)
+            return em.createQuery("select count(vo.postId) from ReactionEntity vo where vo.postId.idx = :postIdx and vo.reactionType = :reactionType", Long.class)
                     .setParameter("postIdx", postIdx)
                     .setParameter("reactionType", type)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public long countReactionAllByPost(Integer postIdx) {
+        try {
+            return em.createQuery("select count(vo.postId) from ReactionEntity vo where vo.postId.idx = :postIdx", Long.class)
+                    .setParameter("postIdx", postIdx)
                     .getSingleResult();
         } catch (NoResultException e) {
             return 0;

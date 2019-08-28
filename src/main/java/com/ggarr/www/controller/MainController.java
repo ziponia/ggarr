@@ -2,6 +2,7 @@ package com.ggarr.www.controller;
 
 import com.ggarr.www.entity.PostEntity;
 import com.ggarr.www.service.PostService;
+import com.ggarr.www.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,9 @@ public class MainController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private ReactionService reactionService;
 
     @GetMapping(value = "/")
     public String home(

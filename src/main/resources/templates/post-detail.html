@@ -51,7 +51,7 @@
     </div>
 
     <!--  comment  -->
-    <div class="comments" id="__vm__">
+    <div class="comments">
         <h4>댓글</h4>
         <div sec:authorize="!isAuthenticated()">
             <a th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}">댓글은 로그인 한 다음에 써주세요 @_@</a>
@@ -65,7 +65,7 @@
             </div>
         </form>
 
-        <ul class="comment-lists">
+        <ul class="comment-lists" id="__vm__">
             <li class="comment-item" th:each="item, index : ${commentList}">
                 <div class="comment-contents">
                     <span class="comment-cell cell-40" th:text="${item.content}">1</span>
@@ -143,9 +143,9 @@
     }
 
     if (!!document['comment_form']) {
+        console.log('SET Comment Form');
         document['comment_form'].addEventListener('submit', function (e) {
             e.preventDefault();
-
             var f = new FormData(this);
             var msg = f.get('content');
 

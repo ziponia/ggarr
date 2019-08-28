@@ -20,10 +20,16 @@ import java.util.Date;
 public class ReactionEntity implements Serializable {
 
     @Id
-    private Integer userId;
+    @GeneratedValue
+    private Integer idx;
 
-    @Id
-    private Integer postId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userId;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private PostEntity postId;
 
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;

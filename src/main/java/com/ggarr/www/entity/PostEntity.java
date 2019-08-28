@@ -37,6 +37,9 @@ public class PostEntity {
     @OneToMany(targetEntity = CommentEntity.class, mappedBy = "post")
     private List<CommentEntity> comments;
 
+    @OneToMany(targetEntity = ReactionEntity.class, mappedBy = "postId")
+    public List<ReactionEntity> reactions;
+
     @CreationTimestamp
     private Date createTime;
 
@@ -45,5 +48,9 @@ public class PostEntity {
 
     public int getCommentCount() {
         return comments.size();
+    }
+
+    public int getReactionCount() {
+        return reactions.size();
     }
 }
