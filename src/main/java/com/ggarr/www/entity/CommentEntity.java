@@ -16,21 +16,23 @@ public class CommentEntity {
 
     @Id
     @GeneratedValue
-    private Integer idx;
+    protected Integer idx;
 
-    private String content;
+    protected String content;
+
+    @JoinColumn(name = "reply")
+    @ManyToOne(targetEntity = CommentEntity.class)
+    protected CommentEntity commentReply;
 
     @ManyToOne(targetEntity = PostEntity.class)
-    private PostEntity post;
+    protected PostEntity post;
 
     @ManyToOne(targetEntity = UserEntity.class)
     private UserEntity createUser;
 
-
-
     @CreationTimestamp
-    private Date createTime;
+    protected Date createTime;
 
     @UpdateTimestamp
-    private Date updateTime;
+    protected Date updateTime;
 }

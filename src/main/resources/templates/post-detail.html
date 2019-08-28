@@ -51,7 +51,7 @@
     </div>
 
     <!--  comment  -->
-    <div class="comments">
+    <div class="comments" id="__vm__">
         <h4>댓글</h4>
         <div sec:authorize="!isAuthenticated()">
             <a th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}">댓글은 로그인 한 다음에 써주세요 @_@</a>
@@ -64,18 +64,40 @@
                 <button class="comment-save-btn"><i class="remixicon-check-line"></i></button>
             </div>
         </form>
-        <div class="comment-lists">
-            <ul class="table">
-                <li class="table-row" th:each="item, index : ${commentList}">
-                    <span class="cell" th:text="${item.content}">1</span>
-                    <span class="cell" th:text="${item.createUser.name}">1</span>
-                    <span class="cell" th:text="${item.createTime}">1</span>
-                    <span class="cell">
+
+        <ul class="comment-lists">
+            <li class="comment-item" th:each="item, index : ${commentList}">
+                <div class="comment-contents">
+                    <span class="comment-cell cell-40" th:text="${item.content}">1</span>
+                    <span class="comment-cell cell-15" th:text="${item.createUser.name}">1</span>
+                    <span class="comment-cell cell-20" th:text="${item.createTime}">1</span>
+                    <span class="space"></span>
+                    <span class="comment-cell">
+                        <button class="reply-btn" th:@click="|onReplyButtonClickHandler(${item.idx})|">대대끌</button>
                         <button class="comment-delete-btn" th:if="${item.createUser.email == #authentication.name}" th:onclick="|deleteComment(${item.idx})|">삭제</button>
                     </span>
-                </li>
-            </ul>
-        </div>
+                </div>
+
+                <div class="reply-wrapper" th:attr="v-if='commentIdx ===' + ${item.idx}">
+                    <input type="text" placeholder="대대끌.." class="reply-input" v-model="content" @keyup.enter="onReplySave"/>
+
+                    <ul class="reply-list" v-if="replyList.length > 0">
+                        <li class="reply-item" v-for="item in replyList">
+                            <div class="reply-contents">
+                                <span class="reply-cell cell-40">{{ item.content }}</span>
+                                <span class="reply-cell cell-15">{{ item.createUser }}</span>
+                                <span class="reply-cell cell-20">{{ moment(item.createTime).fromNow() }}</span>
+                                <span class="space"></span>
+                                <span class="reply-cell">
+                                    <button class="reply-delete-btn" v-if="item.accessUpdate === true" @click="onReplyRemove(item.idx)">삭제</button>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
         <div class="pagination_wrap" th:if="${commentList.totalElements > 0}">
             <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
                 <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
@@ -91,12 +113,13 @@
     <input type="hidden" name="postIdx" th:value="${post.idx}" id="postIdx"/>
 </form>
 </th:block>
-
-<script layout:fragment="page-script" th:inline="javascript">
+<div layout:fragment="page-script" th:remove="tag">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+<script th:inline="javascript">
+    var postIdx = [[ ${post.idx}]];
     function updateReaction(type) {
-        var reactionPost = [[ ${post.idx}]];
         var form = new FormData();
-        form.append('postIdx', reactionPost);
+        form.append('postIdx', postIdx);
         form.append('reactionType', type);
 
         $http.post('/reaction', form).then(function (res) {
@@ -143,5 +166,75 @@
             doc.submit();
         }
     }
+
+    var vm = new Vue({
+        el: '#__vm__',
+        data: {
+            message: 'hello',
+            commentIdx: null,
+            replyList: [],
+            content: ''
+        },
+        methods: {
+            onReplyButtonClickHandler: function (commentIdx) {
+                this.commentIdx = this.commentIdx === commentIdx ? null : commentIdx;
+
+                if (this.commentIdx === null) {
+                    this.replyList = [];
+                }
+
+                if (this.commentIdx !== null) {
+                    this.findReply(commentIdx);
+                }
+            },
+            findReply: function (commentIdx) {
+                var _that = this;
+                Pace.restart();
+                $http.get('/v/comment/' + commentIdx + '/reply')
+                    .then(function (response) {
+                        _that.replyList = response.data;
+                    })
+            },
+            onReplyRemove: function (replyIdx) {
+                var _that = this;
+                var confirm = window.confirm('저.. 정말 지울꺼에욧..?');
+                if (!confirm)
+                    return false;
+
+                Pace.restart();
+                $http.delete('/v/comment/' + replyIdx)
+                    .then(function (response) {
+                        _that.findReply(_that.commentIdx);
+                    })
+                    .catch(function (error) {
+                        alert('헤헤 못지웠지롱~ 근데 일부러 그런건 아니지욧');
+                    })
+            },
+            onReplySave: function () {
+                var _that = this;
+                $http.post('/v/comment/reply', {
+                    targetCommentIdx: _that.commentIdx,
+                    targetPostIdx: postIdx,
+                    content: _that.content
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8'
+                    }
+                }).then(function (response) {
+                    _that.content = '';
+                    _that.findReply(_that.commentIdx);
+                }).catch(function (error) {
+                    var status = error.response.status;
+
+                    if (status === 401) {
+                        alert('아.. 아쉽... 저장 못함...');
+                    } else {
+                        alert('이 메세지 보면 이건 그냥 뭔가 오류인데 새로고침 눌르고 다시 작성하셈... 그래도 안되면...');
+                    }
+                })
+            }
+        }
+    })
 </script>
+</div>
 </html>

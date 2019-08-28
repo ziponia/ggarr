@@ -15,6 +15,12 @@ a {
     text-decoration: none;
 }
 
+.card {
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
 /* Loading */
 .pace {
     -webkit-pointer-events: none;
@@ -394,15 +400,97 @@ ul.table li.table-row .cell.cell-100 { width: 100%; }
 
 .detail-page .comment-lists {
     margin-bottom: 30px;
+    padding: 20px;
+}
+
+.detail-page .comment-lists .comment-item {
+
+}
+
+.detail-page .comment-lists .comment-item .comment-contents {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.detail-page .comment-lists .comment-item .comment-contents .comment-cell:nth-child(1) {
+    width: 40%;
+}
+.detail-page .comment-lists .comment-item .comment-contents .comment-cell:nth-child(2) {
+    width: 15%;
+}
+.detail-page .comment-lists .comment-item .comment-contents .comment-cell:nth-child(3) {
+    width: 20%;
+}
+.detail-page .comment-lists .comment-item .comment-contents .comment-cell:nth-child(4) {
+
 }
 
 .detail-page .comment-lists form {
     display: table-row;
 }
 
-.detail-page .comment-lists .comment-delete-btn {
+.detail-page .comment-lists .reply-btn {
     border: 0;
     background-color: #6060e0;
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.detail-page .comment-lists .reply-wrapper {
+    display: block;
+    background-color: #ffffff;
+}
+
+.detail-page .comment-lists .reply-wrapper .reply-input {
+    width: 100%;
+    padding: 5px;
+    border: 0;
+    border-bottom: 1px solid #eeeeee;
+    box-sizing: border-box;
+    resize: none;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.detail-page .comment-lists .reply-wrapper .reply-input:focus {
+    border-bottom: 1px solid #6060e0;
+}
+
+.detail-page .comment-lists .reply-wrapper .reply-list {
+    padding: 20px;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item {
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 0;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-contents {
+    display: flex;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-cell:nth-child(1) {
+    width: 40%;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-cell:nth-child(2) {
+    width: 15%;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-cell:nth-child(3) {
+    width: 20%;
+}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-cell:nth-child(4) {}
+.detail-page .comment-lists .reply-wrapper .reply-list .reply-item .reply-cell .reply-delete-btn {
+    border: 0;
+    background-color: #ff6a5a;
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+
+.detail-page .comment-lists .comment-delete-btn {
+    border: 0;
+    background-color: #ff6a5a;
     color: #ffffff;
     border-radius: 2px;
     padding: 0 10px;
