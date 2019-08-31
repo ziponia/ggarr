@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Gamja+Flower&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css" />
         <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/black/pace-theme-minimal.min.css" />
         <link rel="stylesheet" href="/static/css/style.css" />
@@ -24,10 +25,14 @@
 
     <th:block th:fragment="toolbar">
         <div class="toolbar">
-            <a th:href="@{https://github.com/ziponia/ggarr}" target="_blank"><i class="remixicon-github-fill"></i> Github</a>
+            <h1 class="logo">
+                <a th:href="@{/}">꺄르륵</a>
+            </h1>
+            <a th:href="@{https://github.com/ziponia/ggarr}" class="github-link" target="_blank"><i class="remixicon-github-fill"></i> Github</a>
             <span class="space"></span>
             <a sec:authorize="${!isAuthenticated()}" th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}" class="user-btn"><i class="remixicon-user-line"></i></a>
-            <a sec:authorize="${isAuthenticated()}" href="/" class="user-btn" sec:authentication="name"><i class="remixicon-user-line"></i></a>
+            <!--/*@thymesVar id="user_nick" type="java.lang.String"*/-->
+            <a sec:authorize="${isAuthenticated()}" th:href="@{'/member/@' + ${user_nick}}" class="user-btn" sec:authentication="name"><i class="remixicon-user-line"></i></a>
             <form sec:authorize="${isAuthenticated()}" action="#" th:action="@{/auth/logout}" method="post">
                 <button class="logout-btn" type="submit">로그아웃</button>
             </form>
