@@ -8,7 +8,7 @@ public interface ReactionService {
 
     ReactionEntity findReaction(Integer postIdx, Integer userIdx);
 
-    long countReactionByPost(Integer postIdx, ReactionEntity.ReactionType type);
+    long countReactionByPostQuery(Integer postIdx, ReactionEntity.ReactionType type);
 
     long countReactionAllByPost(Integer postIdx);
 }

@@ -1,9 +1,15 @@
 package com.ggarr.www.controller;
 
 import com.ggarr.www.core.config.security.UserPrincipal;
+import com.ggarr.www.dto.PostListProjection;
+import com.ggarr.www.entity.PostEntity;
 import com.ggarr.www.entity.UserEntity;
 import com.ggarr.www.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,9 +53,14 @@ public class UserController {
 
     @GetMapping(value = "/member/@{username}")
     public String memberPage(
+            @PageableDefault(sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @PathVariable String username
+            @PathVariable String username,
+            Model model
     ) {
+        Page<PostListProjection> postList = userService.findPostByUsername(username, pageable);
+
+        model.addAttribute("postList", postList);
         return "member";
     }
 }

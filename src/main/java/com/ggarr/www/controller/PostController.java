@@ -86,10 +86,10 @@ public class PostController {
 
         model.addAttribute("post", entity);
         model.addAttribute("reaction", reactionEntity);
-        model.addAttribute("like", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.LIKE));
-        model.addAttribute("sad", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.SAD));
-        model.addAttribute("no", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.NO));
-        model.addAttribute("unbelieve", reactionService.countReactionByPost(idx, ReactionEntity.ReactionType.UNBELIEVE));
+        model.addAttribute("like", reactionService.countReactionByPostQuery(idx, ReactionEntity.ReactionType.LIKE));
+        model.addAttribute("sad", reactionService.countReactionByPostQuery(idx, ReactionEntity.ReactionType.SAD));
+        model.addAttribute("no", reactionService.countReactionByPostQuery(idx, ReactionEntity.ReactionType.NO));
+        model.addAttribute("unbelieve", reactionService.countReactionByPostQuery(idx, ReactionEntity.ReactionType.UNBELIEVE));
         model.addAttribute("userPrincipal", userPrincipal);
         model.addAttribute("comment", comment);
         model.addAttribute("commentList", commentList);

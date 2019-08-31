@@ -16,10 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -38,6 +43,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreateUser(userEntity);
         comment.setPost(postEntity);
         commentRepository.save(comment);
+        postCommentCountUpdate(postEntity);
         return comment;
     }
 
@@ -52,6 +58,8 @@ public class CommentServiceImpl implements CommentService {
         CommentEntity commentEntity = commentRepository.getOne(commentIdx);
         if (commentEntity.getCreateUser().getIdx().equals(userPrincipal.getIdx())) {
             commentRepository.deleteById(commentIdx);
+            PostEntity postEntity = postRepository.getOne(commentEntity.getPost().getIdx());
+            postCommentCountUpdate(postEntity);
         }
     }
 
@@ -92,5 +100,12 @@ public class CommentServiceImpl implements CommentService {
                 .createTime(newComment.getCreateTime())
                 .updateTime(newComment.getUpdateTime())
                 .build();
+    }
+
+    private long postCommentCountUpdate(PostEntity postEntity) {
+        long count = commentRepository.countAllByPostIdx(postEntity.getIdx());
+        postEntity.setCommentCount((int) count);
+        em.merge(postEntity);
+        return count;
     }
 }

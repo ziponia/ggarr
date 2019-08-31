@@ -36,18 +36,25 @@ public class ReactionServiceImpl implements ReactionService {
             reactionEntity = new ReactionEntity();
         }
 
+        PostEntity postEntity = postRepository.getOne(postIdx);
         if (reactionEntity.getReactionType() != null && reactionEntity.getReactionType().equals(reactionType)) {
             em.remove(reactionEntity);
+            int countQuery = (int) countReactionByPostQuery(postIdx, reactionType);
+            postEntity.setReactionCount(countQuery);
+            em.merge(postEntity);
             return null;
         }
 
-        PostEntity postEntity = postRepository.getOne(postIdx);
         UserEntity userEntity = userRepository.getOne(userPrincipal.getIdx());
 
         reactionEntity.setPostId(postEntity);
         reactionEntity.setUserId(userEntity);
         reactionEntity.setReactionType(reactionType);
         em.persist(reactionEntity);
+
+        int countQuery = (int) countReactionByPostQuery(postIdx, reactionType);
+        postEntity.setReactionCount(countQuery);
+        em.merge(postEntity);
         return reactionEntity;
     }
 
@@ -68,7 +75,7 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
-    public long countReactionByPost(Integer postIdx, ReactionEntity.ReactionType type) {
+    public long countReactionByPostQuery(Integer postIdx, ReactionEntity.ReactionType type) {
         try {
             return em.createQuery("select count(vo.postId) from ReactionEntity vo where vo.postId.idx = :postIdx and vo.reactionType = :reactionType", Long.class)
                     .setParameter("postIdx", postIdx)

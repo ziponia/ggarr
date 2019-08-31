@@ -6,14 +6,39 @@
       layout:decorate="~{layout/main}">
 
 <th:block layout:fragment="content">
-<main class="main-page member-page clearfix">
-    <div class="user-left">
-        <img src="#" alt="user-profile-pic" class="user-profile-pic"/>
-    </div>
-    <div class="user-right">
-
+<main class="main-page member-page clearfix" id="__vm__">
+    <div class="user-post">
+        <ul class="user-post-wrapper">
+            <li class="user-post-item card" v-for="item in posts">
+                <h4 class="item-title"><a :href="`/posts/${item.idx}`">{{ item.title }}</a></h4>
+                <p class="item-content"><a :href="`/posts/${item.idx}`">{{ item.postContentRemoveHTML }}</a></p>
+                <div class="item-extra-block">
+                    <span>반응 {{ item.reactionCount }}</span>
+                    <span>리플 {{ item.commentCount }}</span>
+                    <span>조회 {{ item.viewCount }}</span>
+                </div>
+            </li>
+        </ul>
     </div>
 </main>
 </th:block>
 
+<th:block layout:fragment="page-script" th:remove="tag">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+    <script th:inline="javascript">
+
+        var vm = new Vue({
+            el: "#__vm__",
+            data: {
+                hasNext: [[ ${!postList.last} ]],
+                posts: [[ ${postList.content }]]
+            },
+            methods: {
+                _findUserPost: function () {
+
+                }
+            }
+        });
+    </script>
+</th:block>
 </html>

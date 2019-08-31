@@ -1,11 +1,16 @@
 package com.ggarr.www.service.impl;
 
 import com.ggarr.www.core.util.UtilComponent;
+import com.ggarr.www.dto.PostListProjection;
+import com.ggarr.www.entity.PostEntity;
 import com.ggarr.www.entity.UserEntity;
 import com.ggarr.www.exception.handler.UserRegisterException;
+import com.ggarr.www.repository.PostRepository;
 import com.ggarr.www.repository.UserRepository;
 import com.ggarr.www.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Override
     public boolean checkUserEmail(String email) {
@@ -102,5 +110,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return true;
+    }
+
+    @Override
+    public Page<PostListProjection> findPostByUsername(String username, Pageable pageable) {
+        return postRepository.findAllByCreateUserName(username, pageable, PostListProjection.class);
     }
 }

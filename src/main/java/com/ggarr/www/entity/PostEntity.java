@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +33,12 @@ public class PostEntity {
     @ColumnDefault("0")
     private int viewCount;
 
+    @ColumnDefault("0")
+    private int commentCount;
+
+    @ColumnDefault("0")
+    private int reactionCount;
+
     @ManyToOne(targetEntity = UserEntity.class)
     private UserEntity createUser;
 
@@ -52,5 +60,10 @@ public class PostEntity {
 
     public int getReactionCount() {
         return reactions.size();
+    }
+
+    public String getPostContentRemoveHTML() {
+        Document doc = Jsoup.parse(content);
+        return doc.text();
     }
 }

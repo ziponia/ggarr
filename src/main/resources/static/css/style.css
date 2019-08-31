@@ -537,22 +537,34 @@ ul.table li.table-row .cell.cell-100 { width: 100%; }
     padding: 40px;
 }
 
-.member-page .user-left {
-    float: left;
-    width: 300px;
-    border: 1px solid #eeeeee;
+.member-page .user-post {
+    width: 600px;
 }
 
-.member-page .user-left .user-profile-pic {
-    display: block;
-    width: 100%;
-    height: 300px;
-    object-fit: contain;
+.member-page .user-post .user-post-wrapper {}
+.member-page .user-post .user-post-wrapper .user-post-item {
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-.member-page .user-right {
-    float: right;
-    width: 60%;
-    background-color: #5c5c5c;
-    padding:20px;
+.member-page .user-post .user-post-wrapper .user-post-item .item-title {
+    margin-bottom: 10px;
+}
+.member-page .user-post .user-post-wrapper .user-post-item a {
+    color: #cccccc;
+}
+.member-page .user-post .user-post-wrapper .user-post-item:hover a {
+    color: #5c5c5c;
+}
+
+.member-page .user-post .user-post-wrapper .user-post-item .item-content {
+    margin-bottom: 10px;
+    color: #cccccc;
+}
+.member-page .user-post .user-post-wrapper .user-post-item .item-extra-block span {
+    display: inline-block;
+    box-shadow: 0 0 1px 1px #eeeeee;
+    color: #5c5c5c;
+    font-size: 13px;
+    padding: 5px;
 }

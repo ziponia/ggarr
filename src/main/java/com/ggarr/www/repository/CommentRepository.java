@@ -15,4 +15,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     <T> Collection<T> findAllByCommentReplyIdxOrderByIdxDesc(Integer commentIdx, Class<T> type);
 
     <T> T findByIdx(Integer commentIdx, Class<T> type);
+
+    long countAllByPostIdx(Integer postIdx);
 }

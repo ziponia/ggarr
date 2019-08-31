@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,10 +66,10 @@ public class UtilController {
         }
         ReactionEntity response = reactionService.userReaction(postIdx, reactionType, userPrincipal);
         hm.put("type", response == null ? null : response.getReactionType());
-        hm.put("like", reactionService.countReactionByPost(postIdx, ReactionEntity.ReactionType.LIKE));
-        hm.put("no", reactionService.countReactionByPost(postIdx, ReactionEntity.ReactionType.NO));
-        hm.put("sad", reactionService.countReactionByPost(postIdx, ReactionEntity.ReactionType.SAD));
-        hm.put("unbelieve", reactionService.countReactionByPost(postIdx, ReactionEntity.ReactionType.UNBELIEVE));
+        hm.put("like", reactionService.countReactionByPostQuery(postIdx, ReactionEntity.ReactionType.LIKE));
+        hm.put("no", reactionService.countReactionByPostQuery(postIdx, ReactionEntity.ReactionType.NO));
+        hm.put("sad", reactionService.countReactionByPostQuery(postIdx, ReactionEntity.ReactionType.SAD));
+        hm.put("unbelieve", reactionService.countReactionByPostQuery(postIdx, ReactionEntity.ReactionType.UNBELIEVE));
         return ResponseEntity.ok(hm);
     }
 }
