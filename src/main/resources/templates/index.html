@@ -44,7 +44,9 @@
                 <span class="cell" th:text="${post.reactionCount}">35</span>
                 <span class="cell" th:text="${post.viewCount}">150</span>
                 <span class="cell" th:text="${post.commentCount}"></span>
-                <span class="cell" th:text="${post.createUser.name}">화염의지배자불닭보끔</span>
+                <span class="cell">
+                    <a href="#" th:text="${post.createUser.name}" th:href="@{'/member/@' + ${post.createUser.name}}"></a>
+                </span>
             </li>
         </ul>
         <div class="pagination_wrap" th:if="${postList.totalElements > 0}">
