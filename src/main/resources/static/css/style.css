@@ -60,8 +60,9 @@ a, button {
 }
 
 h1, h2, h3, h4, h5, h6, p, input, select, textarea, a, ul, li, mark, button {
-    font-family: 'NanumSquare', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1em;
+    color: #5c5c5c;
 }
 
 .clearfix:before, .clearfix:after {
@@ -534,11 +535,12 @@ ul.table li.table-row .cell.cell-100 { width: 100%; }
 }
 
 .member-page {
-    padding: 40px;
+    padding: 40px 0;
 }
 
 .member-page .user-post {
     width: 600px;
+    float: left;
 }
 
 .member-page .user-post .user-post-wrapper {}
@@ -567,4 +569,11 @@ ul.table li.table-row .cell.cell-100 { width: 100%; }
     color: #5c5c5c;
     font-size: 13px;
     padding: 5px;
+}
+
+.member-page .user-info {
+    width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    float: right;
 }
