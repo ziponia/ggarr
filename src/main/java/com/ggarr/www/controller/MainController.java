@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class MainController {
 
@@ -22,12 +24,18 @@ public class MainController {
     public String home(
             @RequestParam(required = false) String query,
             @PageableDefault(sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
+            HttpServletRequest request,
             Model model
     ) {
         if (query != null && query.length() < 1) {
             return "redirect:/";
+        } else if (query != null) {
+            model.addAttribute("siteTitle", "검색결과 - " + query);
+            model.addAttribute("siteKeyword", query);
         }
+
         Page<PostEntity> postList = postService.findAllPost(query, pageable);
+
         model.addAttribute("query", query);
         model.addAttribute("postList", postList);
         return "index";

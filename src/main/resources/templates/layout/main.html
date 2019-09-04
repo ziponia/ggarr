@@ -2,6 +2,15 @@
 <html th:lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107350308-2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-107350308-2');
+        </script>
         <th:block th:replace="fragment/common :: meta"/>
         <th:block th:replace="fragment/common :: head"/>
         <title>모두가 웃는 소리 :: 꺄르륵</title>
