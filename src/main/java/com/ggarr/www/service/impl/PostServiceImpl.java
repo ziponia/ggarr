@@ -49,8 +49,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostEntity> findAllPost(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<PostEntity> findAllPost(String query, Pageable pageable) {
+        if (query == null) {
+            query = "";
+        }
+        return postRepository.findAllPosts(query, pageable);
     }
 
     @Override

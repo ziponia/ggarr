@@ -37,6 +37,7 @@
             <form sec:authorize="${isAuthenticated()}" action="#" th:action="@{/auth/logout}" method="post">
                 <button class="logout-btn" type="submit">로그아웃</button>
             </form>
+            <a href="/create" class="link-btn-icon"><i class="remixicon-pencil-line"></i></a>
         </div>
     </th:block>
 </html>

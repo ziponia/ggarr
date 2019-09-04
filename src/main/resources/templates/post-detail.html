@@ -15,7 +15,7 @@
 </header>
 <main class="detail-page main-page">
     <div class="action">
-        <a href="/" class="link-btn-icon"><i class="remixicon-arrow-left-line"></i></a>
+        <a href="/" class="link-btn-icon shadow"><i class="remixicon-arrow-left-line"></i></a>
         <span class="space"></span>
         <form action="#" th:object="${post}" th:action="@{/posts/archive}" method="post">
             <input type="hidden" th:field="*{idx}"/>
@@ -23,7 +23,7 @@
             <button th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10" title="아카이브로 이동"><i class="remixicon-archive-line"></i></button>
         </form>
         <a th:if="${post.createUser.email == #authentication.name}" th:href="@{/posts/__${post.idx}__/update}" class="link-btn-icon mr-10" title="글 수정"><i class="remixicon-edit-line"></i></a>
-        <a href="/create" class="link-btn-icon" title="새 글"><i class="remixicon-pencil-line"></i></a>
+        <a href="/create" class="link-btn-icon shadow" title="새 글"><i class="remixicon-pencil-line"></i></a>
     </div>
 
     <div class="content" th:utext="${post.content}">
@@ -32,26 +32,26 @@
 
     <!-- reaction -->
     <div class="reaction-block">
-        <button class="link-btn-icon" data-type="LIKE" onclick="updateReaction('LIKE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'LIKE' ? 'active': ''}">
+        <button class="link-btn-icon shadow" data-type="LIKE" onclick="updateReaction('LIKE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'LIKE' ? 'active': ''}">
             <span th:text="${like}">50</span>
             좋아욧
         </button>
-        <button class="link-btn-icon" data-type="NO" onclick="updateReaction('NO')" th:classappend="${reaction != null && reaction.reactionType.name() == 'NO' ? 'active': ''}">
+        <button class="link-btn-icon shadow" data-type="NO" onclick="updateReaction('NO')" th:classappend="${reaction != null && reaction.reactionType.name() == 'NO' ? 'active': ''}">
             <span th:text="${no}">50</span>
             싫어욧
         </button>
-        <button class="link-btn-icon" data-type="SAD" onclick="updateReaction('SAD')" th:classappend="${reaction != null && reaction.reactionType.name() == 'SAD' ? 'active': ''}">
+        <button class="link-btn-icon shadow" data-type="SAD" onclick="updateReaction('SAD')" th:classappend="${reaction != null && reaction.reactionType.name() == 'SAD' ? 'active': ''}">
             <span th:text="${sad}">50</span>
             슬퍼욧
         </button>
-        <button class="link-btn-icon" data-type="UNBELIEVE" onclick="updateReaction('UNBELIEVE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'UNBELIEVE' ? 'active': ''}">
+        <button class="link-btn-icon shadow" data-type="UNBELIEVE" onclick="updateReaction('UNBELIEVE')" th:classappend="${reaction != null && reaction.reactionType.name() == 'UNBELIEVE' ? 'active': ''}">
             <span th:text="${unbelieve}">50</span>
             기가막혀욧
         </button>
     </div>
 
     <!--  comment  -->
-    <div class="comments">
+    <div class="comments shadow">
         <h4>댓글</h4>
         <div sec:authorize="!isAuthenticated()">
             <a th:href="@{/auth/login(redirect_url=${#httpServletRequest.getRequestURL()})}">댓글은 로그인 한 다음에 써주세요 @_@</a>

@@ -10,7 +10,7 @@ public interface PostService {
 
     PostEntity findPost(Integer idx);
 
-    Page<PostEntity> findAllPost(Pageable pageable);
+    Page<PostEntity> findAllPost(String query, Pageable pageable);
 
     PostEntity archivePost(PostEntity entity, UserPrincipal userPrincipal);
 

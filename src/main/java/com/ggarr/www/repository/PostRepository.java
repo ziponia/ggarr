@@ -15,4 +15,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     void updatePostViewerCount(@Param("postIdx") Integer postIdx, @Param("viewCount") Integer viewCount);
 
     <T> Page<T> findAllByCreateUserName(String username, Pageable pageable, Class<T> type);
+
+    @Query("select v from PostEntity v where v.title like %:query% or v.content like %:query% or v.createUser.name like %:query%")
+    Page<PostEntity> findAllPosts(@Param("query") String query, Pageable pageable);
 }

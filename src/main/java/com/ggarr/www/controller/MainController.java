@@ -2,7 +2,6 @@ package com.ggarr.www.controller;
 
 import com.ggarr.www.entity.PostEntity;
 import com.ggarr.www.service.PostService;
-import com.ggarr.www.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,16 +18,16 @@ public class MainController {
     @Autowired
     private PostService postService;
 
-    @Autowired
-    private ReactionService reactionService;
-
     @GetMapping(value = "/")
     public String home(
             @RequestParam(required = false) String query,
             @PageableDefault(sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
             Model model
     ) {
-        Page<PostEntity> postList = postService.findAllPost(pageable);
+        if (query != null && query.length() < 1) {
+            return "redirect:/";
+        }
+        Page<PostEntity> postList = postService.findAllPost(query, pageable);
         model.addAttribute("query", query);
         model.addAttribute("postList", postList);
         return "index";
